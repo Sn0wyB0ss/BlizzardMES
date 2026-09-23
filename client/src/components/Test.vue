@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
+import GraficoCircular from "./grafico/GraficoCircular.vue";
 
 const styleObjectHorizontal = {
   flexDirection: "row",
@@ -17,10 +18,10 @@ const styleObjectVertical = {
     <div class="painel">
       <div class="titulo">OEE Geral</div>
       <div class="conteudo" :style="styleObjectHorizontal">
-        <div class="grafico-circular">OEE</div>
-        <div class="grafico-circular">Disponibilidade</div>
-        <div class="grafico-circular">Performance</div>
-        <div class="grafico-circular">Qualidade</div>
+        <GraficoCircular name="OEE" :value="10" :maximum="100" />
+        <GraficoCircular name="Disponibilidade" :value="50" :maximum="100" />
+        <GraficoCircular name="Performance" :value="30" :maximum="100" />
+        <GraficoCircular name="Qualidade" :value="100" :maximum="100" />
       </div>
     </div>
 
@@ -83,6 +84,6 @@ const styleObjectVertical = {
   height: 100%;
   margin: 1%;
   text-align: left;
-  text-justify:;
+  text-justify: left;
 }
 </style>

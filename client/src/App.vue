@@ -5,7 +5,7 @@ import TheWelcome from "./components/TheWelcome.vue";
 import Test from "./components/Test.vue";
 
 const routes = {
-  "/": TheWelcome,
+  "/": Test,
   "/hello_world": Test,
 };
 
