@@ -8,6 +8,4 @@ O escopo desse projeto visa primariamente a implementação de um Sistema MES en
 
 `client` - Interface do Sistema MES.
 
-`server` - Servidor do Sistema MES.
-
 `machinery` - Scripts que simulam uma maquina real para implementar no Sistema MES.
