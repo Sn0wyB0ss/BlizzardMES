@@ -1,6 +1,46 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import GraficoCircular from "./grafico/GraficoCircular.vue";
+import DropdownFilter from "./grafico/DropdownFilter.vue";
+
+
+const period_dict_data = {
+  "Today": {
+    oee: 10,
+    disponibilidade: 40,
+    performance: 80,
+    qualidade: 100,
+  },
+  "This Month": {
+    oee: 36,
+    disponibilidade: 90,
+    performance: 56,
+    qualidade: 85,
+  },
+  "This Year": {
+    oee: 0,
+    disponibilidade: 100,
+    performance: 34,
+    qualidade: 36,
+  },
+  "This Week": {
+    oee: 40,
+    disponibilidade: 10,
+    performance: 70,
+    qualidade: 90,
+  },
+} as const;
+
+type PeriodFilter = keyof typeof period_dict_data;
+
+const period_filter = ref<PeriodFilter>("Today");
+
+const drop_list_options = [
+    "Today",
+    "This Week",
+    "This Month",
+    "This Year"
+] as const;
 
 const styleObjectHorizontal = {
   flexDirection: "row",
@@ -9,19 +49,35 @@ const styleObjectHorizontal = {
 const styleObjectVertical = {
   flexDirection: "column",
 } as const;
+
+const change_filter = (value: PeriodFilter) => {
+  period_filter.value = value;
+  const data = period_dict_data[value];
+  oee_value.value = data.oee;
+  disponibilidade_value.value = data.disponibilidade;
+  qualidade_value.value = data.qualidade;
+  perfomance_value.value = data.performance;
+  console.log(data);
+};
+
+const oee_value: any = ref(0);
+const disponibilidade_value = ref(0);
+const qualidade_value = ref(0);
+const perfomance_value = ref(0);
 </script>
 
 <template>
   <div class="principal">
-    <div class="filtro">Filtro</div>
+    <DropdownFilter :list_items="drop_list_options" @on-change-filter="change_filter"></DropdownFilter>
 
     <div class="painel">
+      
       <div class="titulo">OEE Geral</div>
       <div class="conteudo" :style="styleObjectHorizontal">
-        <GraficoCircular name="OEE" :value="10" :maximum="100" />
-        <GraficoCircular name="Disponibilidade" :value="50" :maximum="100" />
-        <GraficoCircular name="Performance" :value="30" :maximum="100" />
-        <GraficoCircular name="Qualidade" :value="100" :maximum="100" />
+        <GraficoCircular name="OEE" :value="oee_value" :maximum="100" />
+        <GraficoCircular name="Disponibilidade" :value="disponibilidade_value" :maximum="100" />
+        <GraficoCircular name="Performance" :value="perfomance_value" :maximum="100" />
+        <GraficoCircular name="Qualidade" :value="qualidade_value" :maximum="100" />
       </div>
     </div>
 
@@ -37,6 +93,7 @@ const styleObjectVertical = {
       </div>
     </div>
   </div>
+  {{ period_filter }}
 </template>
 
 <style scoped>
@@ -65,11 +122,6 @@ const styleObjectVertical = {
   background-color: blue;
 }
 
-.filtro {
-  background-color: grey;
-  width: 60px;
-  height: 30px;
-}
 
 .grafico-circular {
   background-color: cornflowerblue;

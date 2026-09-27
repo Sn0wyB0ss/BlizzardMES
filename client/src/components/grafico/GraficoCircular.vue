@@ -1,18 +1,26 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import CanvasJS from "@canvasjs/charts";
+
 const props = defineProps<{ name: string; value: number; maximum: number }>();
 const chartContainer = ref<HTMLDivElement | null>(null);
-onMounted(() => {
+
+const renderChart = () => {
   if (!chartContainer.value) {
     return;
   }
   const chart = new CanvasJS.Chart(chartContainer.value, {
+    interactivityEnabled: false,
     animationEnabled: false,
-    title: { text: props.name },
+    title: { text: props.name, fontColor: "#ffffff"},
     subtitles: [{ text: `${props.value}`, verticalAlign: "center" }],
-    legend: { enabled: false },
+    legend: { 
+      enabled: false,
+      color: "#ffffff"
+    },
     toolTip: { enabled: false },
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    color: '#FFF ',
     data: [
       {
         type: "doughnut",
@@ -35,7 +43,15 @@ onMounted(() => {
     ],
   });
   chart.render();
-});
+};
+onMounted(() => {renderChart()});
+
+watch(
+  () => props.value,
+  () => {
+    renderChart();
+  }
+)
 </script>
 <template>
   <div class="main">
@@ -53,6 +69,7 @@ onMounted(() => {
   width: 100%;
 }
 .titulo {
+  color: white;
   text-align: center;
 }
 .chart-wrapper {
@@ -68,7 +85,7 @@ onMounted(() => {
 
 .value {
   position: absolute;
-  color: black;
+  color: white;
   left: 20%;
   bottom: 50%;
   transform: translateX(-50%);
